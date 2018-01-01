@@ -1,0 +1,16 @@
+name: ScoreTrading
+main: io.github.Alligrater.ScoreTrading
+version: 1.0
+commands:
+  scoreshop: 
+    description: Buy items from the score shop.
+    usage: /scoreshop
+  scoretrading: 
+    description: manage values.
+    usage: /scoretrading [reload/set/add] [..value] [..player]
+  myscore: 
+    description: what is my score
+    usage: /myscore
+  shoptool: 
+    description: add to shop
+    usage: /shoptool
