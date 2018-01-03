@@ -47,7 +47,7 @@ public class AddtoShop implements CommandExecutor{
 				}
 				
 				//if(player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-					if(slot != -1 && price != 0 && slot < 54) {
+					if(slot != -1 && slot < 54) {
 						if(arg3[0].equalsIgnoreCase("set")) {
 							config.set("ScoreShop.Items."+ slot + ".item", player.getInventory().getItemInMainHand().serialize());
 							config.set("ScoreShop.Items."+ slot + ".price", price);
@@ -80,6 +80,14 @@ public class AddtoShop implements CommandExecutor{
 					player.sendMessage("¡ì7Successfully removed item in slot¡ìe " + slot);
 				}
 
+			}
+			
+			else if(arg3.length == 1) {
+				if(arg3[0].equalsIgnoreCase("reload")) {
+					plugin.reloadConfig();
+					updateshop();
+					player.sendMessage("¡ì7Successfully updated shop!");
+				}
 			}
 			
 
