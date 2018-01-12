@@ -7,64 +7,53 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class ScoreManagement {
-	public static boolean changeScore(OfflinePlayer player, int value) {
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("ScoreTrading");
-		FileConfiguration config = plugin.getConfig();
-		boolean allow = true;
+	public static boolean changeScore(String player, int value) {
+
+		boolean allow = false;
 		
 		if(value == 0)
 			return false;
 		
-		if(config.get("scores."+player.getName()) != null) {
-			if((int)config.get("scores."+player.getName()) + value > 0) {
+		//port to hashmap (uses memory instead)
+		
+		if(ScoreTrading.playerscores.get(player) != null) {
+			if(ScoreTrading.playerscores.get(player) + value > 0) {
 				allow = true;
-				config.set("scores."+player.getName(), (int)config.get("scores."+player.getName()) + value);
-				
-			}
-			else
-				allow = false;
-		}
-		else {
-			if(value > 0) {
-				allow = true;
-				config.set("scores."+player.getName(), value);
+				ScoreTrading.playerscores.put(player, ScoreTrading.playerscores.get(player) + value);
 			}
 			else {
 				allow = false;
 			}
 		}
-		if(allow) {
-			plugin.saveConfig();
+		else {
+			if(value > 0) {
+				allow = true;
+				ScoreTrading.playerscores.put(player, value);
+			}
+			else {
+				allow = false;
+			}
 		}
+		
 		return allow;
 	}
 	
-	public static boolean setScore(OfflinePlayer player, int value) {
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("ScoreTrading");
-		FileConfiguration config = plugin.getConfig();
+	public static boolean setScore(String player, int value) {
+
 		boolean allow = true;
 		if(value < 0) {
 			allow = false;
 		}
 		
 		if(allow) {
-			config.set("scores."+player.getName(), value);
+			ScoreTrading.playerscores.put(player, value);
 		}
 		
 		return allow;
 	}
 	
-	public static int getScore(OfflinePlayer player) {
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("ScoreTrading");
-		FileConfiguration config = plugin.getConfig();
-		boolean allow = true;
+	public static int getScore(String player) {
 		
-		if(config.get("scores."+player.getName()) != null) {
-			return (int) config.get("scores."+player.getName());
-		}
-		else {
-			config.set("scores."+player.getName(), 0);
-			return 0;
-		}
+		return ScoreTrading.playerscores.getOrDefault(player, -1);
 	}
 }

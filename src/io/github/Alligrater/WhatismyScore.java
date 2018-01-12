@@ -14,7 +14,7 @@ public class WhatismyScore implements CommandExecutor{
 		if(sender instanceof Player) {
 			Player player = (Player) sender;
 			
-			sender.sendMessage(String.format("§7你的当前得分为§e%s§7!", ScoreManagement.getScore(player)));
+			sender.sendMessage(String.format("§7你的当前得分为§e%s§7!", ScoreManagement.getScore(player.getName())));
 		}
 		return true;
 	}

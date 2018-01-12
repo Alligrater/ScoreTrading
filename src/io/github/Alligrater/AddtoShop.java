@@ -27,11 +27,21 @@ public class AddtoShop implements CommandExecutor{
 			
 			Player player = (Player) sender;
 			
-			//./shoptool add 3 1000
-			//./shoptool set 3 100
-			if(arg3.length == 3) {
+			//./shoptool set 3:9 1000
+			if(arg3.length > 2) {
+				
+				//row 1 column 1
+				String slotx = arg3[1].substring(0, arg3[1].indexOf(":"));
+				String sloty = arg3[1].substring(arg3[1].indexOf(":") + 1);
 				
 				int slot = -1;
+				
+				try {
+					slot = (Integer.parseInt(slotx) - 1) * 9 + Integer.parseInt(sloty) - 1;
+				} catch (Exception e) {
+					slot = -1;
+				}
+				
 				int price = 0;
 				
 				try {
@@ -40,13 +50,9 @@ public class AddtoShop implements CommandExecutor{
 					price = 0;
 				}
 				
-				try {
-					slot = Integer.parseInt(arg3[1]);
-				} catch (Exception e) {
-					slot = -1;
-				}
+
 				
-				//if(player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+				if(player.getInventory().getItemInMainHand().getType() != Material.AIR) {
 					if(slot != -1 && slot < 54) {
 						if(arg3[0].equalsIgnoreCase("set")) {
 							config.set("ScoreShop.Items."+ slot + ".item", player.getInventory().getItemInMainHand().serialize());
@@ -54,22 +60,32 @@ public class AddtoShop implements CommandExecutor{
 							plugin.saveConfig();
 							plugin.reloadConfig();
 							updateshop();
-							player.sendMessage("¡ì7Successfully set item in slot¡ìe " + slot);
+
+							player.sendMessage("¡ì7Successfully set item in slot¡ìe " + slot + "(" + arg3[1] + ")");
 						}
 					}
-				//}
+					else {
+						player.sendMessage("¡ì7Incorrect format. \nParams should be: ¡ìe/shoptool set <row>:<col> <price>");
+					}
+				}
+				else {
+					player.sendMessage("¡ì7You don't have any ¡ìeitem¡ì7 in your hand");
+				}
 				
 			}
 			
 			//./shoptool remove 2
 			else if(arg3.length == 2) {
 				
+				String slotx = arg3[1].substring(0, arg3[1].indexOf(":"));
+				String sloty = arg3[1].substring(arg3[1].indexOf(":") + 1);
+				
 				int slot = -1;
 				
 				try {
-					slot = Integer.parseInt(arg3[1]);
+					slot = (Integer.parseInt(slotx) - 1) * 9 + Integer.parseInt(sloty) - 1;
 				} catch (Exception e) {
-					slot = 0;
+					slot = -1;
 				}
 				
 				if(slot != -1) {
@@ -77,7 +93,7 @@ public class AddtoShop implements CommandExecutor{
 					plugin.saveConfig();
 					plugin.reloadConfig();
 					updateshop();
-					player.sendMessage("¡ì7Successfully removed item in slot¡ìe " + slot);
+					player.sendMessage("¡ì7Successfully removed item in slot¡ìe " + slot + "(" + arg3[1] + ")");
 				}
 
 			}
@@ -86,7 +102,8 @@ public class AddtoShop implements CommandExecutor{
 				if(arg3[0].equalsIgnoreCase("reload")) {
 					plugin.reloadConfig();
 					updateshop();
-					player.sendMessage("¡ì7Successfully updated shop!");
+					ScoreMonitor.nogainworld =(List<String>) config.getList("Nogainworld", new ArrayList<String>());
+					player.sendMessage("¡ì7Successfully updated config files!");
 				}
 			}
 			
@@ -130,7 +147,11 @@ public class AddtoShop implements CommandExecutor{
 					ScoreTrading.iteminshop.put(i, iteminshop);
 				}
 
-
+		}
+		
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			if(p.getOpenInventory().getTitle().contains("¡ìrScoreShop - Balance: ¡ìe"))
+				PaymentGUIOpen.newopenGUI(p);
 		}
 	}
 

@@ -8,31 +8,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ScoreModify implements CommandExecutor{
-
+	
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] arg3) {
 		if(sender.hasPermission("ScoreTrading.manage")) {
-			if(arg3.length == 1) {
-				if(arg3[0].equalsIgnoreCase("reload")) {
-					Bukkit.getPluginManager().getPlugin("ScoreTrading").reloadConfig();
-					sender.sendMessage("¡ì7Plugin Configuration Reloaded.");
-				}
-			}
-			else if(arg3.length == 2) {
+			if(arg3.length == 2) {
 				if(arg3[0].equalsIgnoreCase("query")) {
-					OfflinePlayer player = Bukkit.getPlayer(arg3[1]);
+					String player = arg3[1];
 					
-					if(player != null) {
-						sender.sendMessage(String.format("¡ì7Score of Player %s is %s!", player.getName(), ScoreManagement.getScore(player)));
-					}
+					sender.sendMessage(String.format("¡ì7Score of Player ¡ìe%s¡ì7 is ¡ìe%s¡ì7!", player, ScoreManagement.getScore(player)));
 				}
 			}
 			else if(arg3.length == 3) {
 				if(arg3[0].equalsIgnoreCase("add")) {
-					OfflinePlayer player = Bukkit.getPlayer(arg3[2]);
+					String player = arg3[2];
 						
-					
-					if(player != null) {
 						int value = 0;
 						
 						try {
@@ -41,15 +32,14 @@ public class ScoreModify implements CommandExecutor{
 							value = 0;
 						}
 						if (ScoreManagement.changeScore(player, value)) {
-							sender.sendMessage(String.format("¡ì7Score of Player %s Changed to %s!", player.getName(), ScoreManagement.getScore(player)));
+							sender.sendMessage(String.format("¡ì7Score of Player ¡ìe%s¡ì7 Changed to ¡ìe%s¡ì7!", player, ScoreManagement.getScore(player)));
 						}
 						else {
 							sender.sendMessage("¡ì7Failed to Changed Score!");
 						}
-					}
 				}
 				else if(arg3[0].equalsIgnoreCase("set")) {
-					OfflinePlayer player = Bukkit.getPlayer(arg3[2]);
+					String player = arg3[2];
 
 					
 					if(player != null) {
@@ -61,7 +51,7 @@ public class ScoreModify implements CommandExecutor{
 							value = 0;
 						}
 						if (ScoreManagement.setScore(player, value)) {
-							sender.sendMessage(String.format("¡ì7Score of Player %s Changed to %s!", player.getName(), ScoreManagement.getScore(player)));
+							sender.sendMessage(String.format("¡ì7Score of Player ¡ìe%s¡ì7 Changed to ¡ìe%s¡ì7!", player, ScoreManagement.getScore(player)));
 						}
 						else {
 							sender.sendMessage("¡ì7Failed to Changed Score!");
@@ -71,7 +61,7 @@ public class ScoreModify implements CommandExecutor{
 				}
 			}
 			else {
-				sender.sendMessage("¡ìcPlease specify an action.");
+				sender.sendMessage("¡ì7Please specify an action.\nAvailable options: \n¡ìe - query <playername> \n¡ìe - add <playername> <score>\n¡ìe - set <playername> <score>");
 			}
 		}
 		else {

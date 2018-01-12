@@ -35,7 +35,7 @@ public class PaymentGUIOpen implements CommandExecutor{
 	
 	
 	public static void newopenGUI(Player player) {
-		Inventory shop = Bukkit.createInventory(null, 54, "¡ìrScoreShop - Balance: ¡ìa" + ScoreManagement.getScore(player));
+		Inventory shop = Bukkit.createInventory(null, 54, "¡ìrScoreShop - Balance: ¡ìe" + ScoreManagement.getScore(player.getName()));
 		for(int i : ScoreTrading.iteminshop.keySet()) {
 			shop.setItem(i, ScoreTrading.iteminshop.get(i));
 		}
